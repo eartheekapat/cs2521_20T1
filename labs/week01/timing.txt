@@ -1,0 +1,28 @@
+Input	Initial	Has	Number	AvgTime	AvgTime
+Size	Order	Dups	of runs	forusel	forsort
+
+5000	random	no	4	0.387sec	0.009sec
+5000	random	yes	4	0.410sec	0.004sec
+
+10000	random	no	4	0.435sec	0.009sec
+10000	random	yes	4	0.383sec	0.004sec
+
+5000	sorted	no	4	0.288sec	0.002sec
+5000	reverse	no	4	0.295sec	0.001sec
+10000	sorted	no	4	0.983sec	0.004sec
+10000	reverse	no	4	0.967sec	0.004sec
+
+5000	sorted	yes	4	0.297sec	0.004sec
+5000	reverse	yes	4	0.295sec	0.003sec
+10000	sorted	yes	4	0.951sec	0.004sec
+10000	reverse	yes	4	0.973sec	0.004sec
+
+sorted vs. reverse
+    It's obvious that sorted in ascending order or descending order doesn't matter
+
+Input size   
+    what matters is the number of input which will make the run-time increase significantly and apparently
+    
+with duplicates vs. no duplicates
+    I don't find an obvious difference created by this variable so I would statictically conclude there is nothing this factor do with the run-time
+
