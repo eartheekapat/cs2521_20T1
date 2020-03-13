@@ -10,6 +10,7 @@
 
 #include "IntList.h"
 
+// just to test git
 // data structures representing IntList
 struct IntListNode {
 	int data;           /**< value of this list item */
