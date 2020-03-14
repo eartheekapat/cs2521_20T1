@@ -28,16 +28,6 @@ int BSTreeGetKth(BSTree t, int k) {
 int putTreeIntoArrayRecursively (BSTree t, int buffer[], int nitem) {
 	buffer[nitem] = t->value;
 	nitem++;
-	if (t->left != NULL) {
-		nitem = putTreeIntoArrayRecursively(t->left, buffer, nitem);
-	} 
-	if (t->right != NULL) {
-		nitem = putTreeIntoArrayRecursively(t->right, buffer, nitem);
-	}
-	if (t->left == NULL && t->right == NULL) {
-		return nitem;
-	} 
-	return nitem;
 }
 
 int *arraySortingAscending (int buffer[], int nitem) {
