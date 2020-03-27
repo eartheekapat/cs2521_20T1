@@ -30,6 +30,16 @@ static int  height(Node n);
 static int  max(int a, int b);
 static Node newNode(Time time);
 
+// function to find height of the tree
+bool checkIfNodeIsPerfectlyBalanced (Node t);
+bool checkNodeRecursively (Node t);
+int countNitemsRecursively (Node t, int nitems);
+Node rebalanceTreeRecur (Node n);
+Node partitionTreeRecur (Node n, int i);
+Time CompareTimeEarlierRecur (Node n, Time time);
+Time CompareTimeLaterRecur (Node n, Time time);
+
+
 ////////////////////////////////////////////////////////////////////////
 // Constructor and Destructor
 
@@ -85,15 +95,123 @@ static Node doInsert(Node n, Time time) {
         return n;
     }
 
+    int hL = height(n->left);
+    int hR = height(n->right);
+    if ((hL - hR) > 1) {
+        int cmp = TimeCmp(time, n->left->time);
+        if (cmp > 0) {
+            n->left = rotateLeft(n->left);
+        }
+        n = rotateRight(n);
+    } else if ((hR - hL) > 1) {
+        int cmp = TimeCmp(time, n->right->time);
+        if (cmp < 0) {
+            n->right = rotateRight(n->right);
+        }
+        n = rotateLeft(n);
+    }
+
     // insertion done
     // correct the height of the current subtree
     n->height = 1 + max(height(n->left), height(n->right));
-    
+    return n;
     // rebalance the tree
     // TODO: Add your code here and change
     //       the return statement if needed
 
+    // check if the tree is balanced or not
+    // bool answer = checkNodeRecursively(n);
+    // if (answer == true) {
+    //     return n;
+    // } else { // if not balance
+    //     // rebalancing tree
+    //     return rebalanceTreeRecur (n);
+    // } 
+}
+
+Node partitionTreeRecur (Node n, int i) {
+    // nitemLeft is #nodes in left subtree
+    int nitemLeft = 0;
+    nitemLeft = countNitemsRecursively(n->left, nitemLeft);
+    if (i < nitemLeft) {
+        n->left = partitionTreeRecur (n->left, i);
+        n = rotateRight (n);
+    } else if (i > nitemLeft) {
+        n->right = partitionTreeRecur (n->right, i-nitemLeft-1);
+        n = rotateLeft (n);
+    }
     return n;
+}
+
+Node rebalanceTreeRecur (Node n) {
+    int nitem = 0;
+    nitem = countNitemsRecursively (n, nitem);
+    if (nitem >= 3) {
+        n = partitionTreeRecur (n, nitem/2);
+        n->left = rebalanceTreeRecur (n->left);
+        n->right = rebalanceTreeRecur (n->right);
+    } 
+    return n;
+}
+
+int countNitemsRecursively (Node t, int nitems) {
+	if (t == NULL) {
+		return nitems;
+	} else {
+		nitems++;
+		if (t->left != NULL) {
+			nitems = countNitemsRecursively(t->left, nitems);
+		} 
+		if (t->right != NULL) {
+			nitems = countNitemsRecursively(t->right, nitems);
+		}
+		if (t->left == NULL && t->right == NULL) {
+			return nitems;
+		} 
+	}
+	return nitems;
+}
+
+bool checkIfNodeIsPerfectlyBalanced (Node t) {
+	if (t->left == NULL && t->right == NULL) {
+		return true;
+	}
+	int nitemsLeft = 0;
+	int nitemsRight = 0;
+	nitemsLeft = countNitemsRecursively(t->left, nitemsLeft);
+	nitemsRight = countNitemsRecursively(t->right, nitemsRight);
+	if ((nitemsRight-1) <= nitemsLeft && nitemsLeft <= (nitemsRight+1)) { 
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool checkNodeRecursively (Node t) {
+	bool answer = checkIfNodeIsPerfectlyBalanced (t);
+	if (answer == false) {
+		return false;
+	}
+	if (t->left == NULL && t->right == NULL) {
+		return true;
+	} 
+	if (t->left != NULL) {
+		answer = checkIfNodeIsPerfectlyBalanced (t->left);
+		if (answer == false) {
+			return false;
+		} else {
+			answer = checkNodeRecursively (t->left);
+		}
+	}
+	if (t->right != NULL) {
+		answer = checkIfNodeIsPerfectlyBalanced (t->right);
+		if (answer == false) {
+			return false;
+		} else {
+			answer = checkNodeRecursively (t->right);
+		}
+	}
+	return answer;
 }
 
 static Node newNode(Time time) {
@@ -110,22 +228,36 @@ static Node newNode(Time time) {
     return n;
 }
 
-
 // Rotates  the  given  subtree left and returns the root of the updated
 // subtree.
 static Node rotateLeft(Node n) {
-    Node temp
+    if (n == NULL || n->right == NULL) {
+        return n;
+    }
+    Node n2 = n->right;
+    n->right = n2->left;
+    n2->left = n;
 
-    return n;
+    n->height = max(height(n->left), height(n->right)) + 1;
+    n2->height = max(height(n2->left), height(n2->right)) + 1;
+
+    return n2;
 }
 
 // Rotates the given subtree right and returns the root of  the  updated
 // subtree.
 static Node rotateRight(Node n) {
-    // TODO: Add your code here and change
-    //       the return statement if needed
-    
-    return n;
+    if (n == NULL || n->left == NULL) {
+        return n;
+    }
+    Node n2 = n->left;
+    n->left = n2->right;
+    n2->right = n;
+
+    n->height = max(height(n->left), height(n->right)) + 1;
+    n2->height = max(height(n2->left), height(n2->right)) + 1;
+
+    return n2;
 }
 
 // Returns  the height of a subtree while assuming that the height field
@@ -153,7 +285,80 @@ Time TreeFloor(Tree t, Time time) {
     //       the return statement if needed
     //       You can create helper functions
     //       if needed
+    if (t == NULL) {
+        return NULL;
+    }
 
+    int cmp = TimeCmp(time, t->root->time);
+    if (cmp < 0) {
+        if (t->root->left == NULL) {
+            return NULL;
+        } else {
+            return CompareTimeEarlierRecur (t->root->left, time);
+        }
+    } else if (cmp > 0) {
+        if (t->root->right == NULL) {
+            return t->root->time;
+        } else {
+            Time answer = CompareTimeLaterRecur (t->root->right, time); 
+            if (answer == NULL) {
+                return t->root->time;
+            } else {
+                return answer;
+            }
+        } 
+    } else { // (cmp == 0)
+        // if time is already in the tree,
+        // we can return straight away
+        return t->root->time;
+    }
+    
+    return NULL;
+}
+
+Time CompareTimeEarlierRecur (Node n, Time time) {
+    int cmp = TimeCmp(time, n->time);
+    if (cmp < 0) {
+        if (n->left == NULL) {
+            return NULL;
+        } else {
+            return CompareTimeEarlierRecur (n->left, time);
+        }
+    } else if (cmp > 0) {
+        if (n->right == NULL) {
+            return n->time;
+        } else {
+            Time answer = CompareTimeLaterRecur (n->right, time); 
+            if (answer == NULL) {
+                return n->time;
+            } else {
+                return answer;
+            }
+        }
+    }
+    return NULL;
+}
+
+Time CompareTimeLaterRecur (Node n, Time time) {
+    int cmp = TimeCmp(time, n->time);
+    if (cmp < 0) {
+        if (n->left == NULL) {
+            return NULL;
+        } else {
+            return CompareTimeEarlierRecur (n->left, time);
+        }
+    } else if (cmp > 0) {
+        if (n->right == NULL) {
+            return n->time;
+        } else {
+            Time answer = CompareTimeLaterRecur (n->right, time); 
+            if (answer == NULL) {
+                return n->time;
+            } else {
+                return answer;
+            }
+        }
+    }
     return NULL;
 }
 
