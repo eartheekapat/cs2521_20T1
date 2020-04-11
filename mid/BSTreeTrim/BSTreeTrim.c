@@ -73,5 +73,5 @@ BSTree deleteNode (BSTree t, int value) {
 			t->right = deleteNode (t->right, temp->value); // delete the duplicate node
 		}
 	}
-	return t; // parent node can update reference
+	return t; 
 }
