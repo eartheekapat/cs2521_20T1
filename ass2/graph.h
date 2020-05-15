@@ -1,13 +1,15 @@
 // graph.h ... Interface to Graph of strings
+
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <assert.h>
-#include <err.h>
-#include <stdbool.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <assert.h>
+#include <err.h>
 #include <sysexits.h>
 #include <sys/types.h>
 

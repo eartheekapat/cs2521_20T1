@@ -15,7 +15,7 @@ urlList newUrlListNode (char *url);
 // find the right position to insert node2 into the tree
 void compareKeyToInsertRecur (InvertedIndexBST node1, InvertedIndexBST node2);
 // insert filename into the node->fileList in the right order
-void insertUrlListNode (InvertedIndexBST node, char *filename);
+void insertUrlListNode (urlList url_list, char *url);
 // find the matched key node in the tree and return the node
 InvertedIndexBST findKeyRecur (InvertedIndexBST node, char *str);
 // loop through buffer to get nodes in the right order to print to invertedIndex.txt
@@ -110,36 +110,12 @@ void compareKeyToInsertRecur (InvertedIndexBST node1, InvertedIndexBST node2) {
     }
 }
 
-void insertUrlListNode (InvertedIndexBST node, char *url) {
-    //loop to find the right order 
-    urlList before_curr, curr = node->urlList;
-    while (curr != NULL) {
-        // compare filename with the exist file name to insert in the right order
-        int cmp = strcmp (url, curr->url);
-        if (cmp == 0) {
-            //do sth in the future but now do nth
-            return;
-        } else if (cmp < 0) { // insert 
-            // check if the node to insert is the first node of the fileList
-            if (node->urlList == curr) {
-                urlList temp = node->urlList;
-                node->urlList = newUrlListNode (url);
-                node->urlList->next = temp;
-                return;
-            } else { // in the middle
-                before_curr->next = newUrlListNode (url);
-                before_curr->next->next = curr;
-                return;
-            }
-        } else if (cmp>0) {
-            if (curr->next == NULL) {
-                curr->next = newUrlListNode (url);
-                return;
-            }
-        }
-        before_curr = curr;
+void insertUrlListNode (urlList url_list, char *url) {
+    urlList curr = url_list;
+    while (curr->next != NULL) {
         curr = curr->next;
     }
+    curr->next = newUrlListNode (url);
 }
 
 InvertedIndexBST findKeyRecur (InvertedIndexBST node, char *str) {
@@ -203,6 +179,17 @@ void arraySortAscendLexi (char buffer[][MAXCHAR], int i) {
         }
 }
 
+char *myStrdup(const char *s1) {
+  char *str;
+  size_t size = strlen(s1) + 1;
+
+  str = malloc(size);
+  if (str) {
+    memcpy(str, s1, size);
+  }
+  return str;
+}
+
 char *normaliseWord(char *str) {
     //remove leading & trailing space 
     // https://codeforwin.org/2016/04/c-program-to-trim-both-leading-and-trailing-white-spaces-in-string.html
@@ -250,15 +237,4 @@ char *toLow(char *str) {
         }
     }
     return str;
-}
-
-char *myStrdup(const char *s1) {
-  char *str;
-  size_t size = strlen(s1) + 1;
-
-  str = malloc(size);
-  if (str) {
-    memcpy(str, s1, size);
-  }
-  return str;
 }

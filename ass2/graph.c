@@ -10,10 +10,10 @@
 #include <string.h>
 #include <sysexits.h>
 
-#include "Graph.h"
+#include "graph.h"
 #include "readData.h"
 
-#define strIsSame(g, t) (strcmp ((g), (t)) == 0)
+#define strEQ(g, t) (strcmp ((g), (t)) == 0)
 
 typedef double Num;
 

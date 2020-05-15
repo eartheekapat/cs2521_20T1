@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "pagerank.h": "c",
+        "invertedindex.h": "c",
+        "stdlib.h": "c"
+    }
+}

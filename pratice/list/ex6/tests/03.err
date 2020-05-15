@@ -1,0 +1,72 @@
+==7749== Memcheck, a memory error detector
+==7749== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==7749== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==7749== Command: ./testListSetUnion
+==7749== 
+==7749== Invalid read of size 8
+==7749==    at 0x109730: freeList (list.c:68)
+==7749==    by 0x109362: main (testListSetUnion.c:40)
+==7749==  Address 0x4a56340 is 0 bytes inside a block of size 8 free'd
+==7749==    at 0x48369EB: free (vg_replace_malloc.c:530)
+==7749==    by 0x10976B: freeList (list.c:74)
+==7749==    by 0x109356: main (testListSetUnion.c:39)
+==7749==  Block was alloc'd at
+==7749==    at 0x48357BF: malloc (vg_replace_malloc.c:299)
+==7749==    by 0x109518: newList (list.c:14)
+==7749==    by 0x109664: strToList (list.c:45)
+==7749==    by 0x1095B4: readList (list.c:26)
+==7749==    by 0x10922C: main (testListSetUnion.c:16)
+==7749== 
+==7749== Invalid read of size 8
+==7749==    at 0x109745: freeList (list.c:71)
+==7749==    by 0x109362: main (testListSetUnion.c:40)
+==7749==  Address 0x4a56208 is 8 bytes inside a block of size 16 free'd
+==7749==    at 0x48369EB: free (vg_replace_malloc.c:530)
+==7749==    by 0x109758: freeList (list.c:72)
+==7749==    by 0x109356: main (testListSetUnion.c:39)
+==7749==  Block was alloc'd at
+==7749==    at 0x48357BF: malloc (vg_replace_malloc.c:299)
+==7749==    by 0x1096CF: newNode (list.c:57)
+==7749==    by 0x10960E: strToList (list.c:35)
+==7749==    by 0x1095B4: readList (list.c:26)
+==7749==    by 0x10922C: main (testListSetUnion.c:16)
+==7749== 
+==7749== Invalid free() / delete / delete[] / realloc()
+==7749==    at 0x48369EB: free (vg_replace_malloc.c:530)
+==7749==    by 0x109758: freeList (list.c:72)
+==7749==    by 0x109362: main (testListSetUnion.c:40)
+==7749==  Address 0x4a56200 is 0 bytes inside a block of size 16 free'd
+==7749==    at 0x48369EB: free (vg_replace_malloc.c:530)
+==7749==    by 0x109758: freeList (list.c:72)
+==7749==    by 0x109356: main (testListSetUnion.c:39)
+==7749==  Block was alloc'd at
+==7749==    at 0x48357BF: malloc (vg_replace_malloc.c:299)
+==7749==    by 0x1096CF: newNode (list.c:57)
+==7749==    by 0x10960E: strToList (list.c:35)
+==7749==    by 0x1095B4: readList (list.c:26)
+==7749==    by 0x10922C: main (testListSetUnion.c:16)
+==7749== 
+==7749== Invalid free() / delete / delete[] / realloc()
+==7749==    at 0x48369EB: free (vg_replace_malloc.c:530)
+==7749==    by 0x10976B: freeList (list.c:74)
+==7749==    by 0x109362: main (testListSetUnion.c:40)
+==7749==  Address 0x4a56340 is 0 bytes inside a block of size 8 free'd
+==7749==    at 0x48369EB: free (vg_replace_malloc.c:530)
+==7749==    by 0x10976B: freeList (list.c:74)
+==7749==    by 0x109356: main (testListSetUnion.c:39)
+==7749==  Block was alloc'd at
+==7749==    at 0x48357BF: malloc (vg_replace_malloc.c:299)
+==7749==    by 0x109518: newList (list.c:14)
+==7749==    by 0x109664: strToList (list.c:45)
+==7749==    by 0x1095B4: readList (list.c:26)
+==7749==    by 0x10922C: main (testListSetUnion.c:16)
+==7749== 
+==7749== 
+==7749== HEAP SUMMARY:
+==7749==     in use at exit: 0 bytes in 0 blocks
+==7749==   total heap usage: 19 allocs, 24 frees, 16,739 bytes allocated
+==7749== 
+==7749== All heap blocks were freed -- no leaks are possible
+==7749== 
+==7749== For counts of detected and suppressed errors, rerun with: -v
+==7749== ERROR SUMMARY: 10 errors from 4 contexts (suppressed: 0 from 0)
